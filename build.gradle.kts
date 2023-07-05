@@ -26,6 +26,14 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.1.1")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:3.1.1")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive:3.1.1")
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
 
     implementation("com.github.jasync-sql:jasync-r2dbc-mysql:2.2.0")
     runtimeOnly("com.mysql:mysql-connector-j")
