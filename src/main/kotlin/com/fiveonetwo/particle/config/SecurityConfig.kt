@@ -17,41 +17,42 @@ import reactor.core.publisher.Mono
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfig(
-        @Value("\${security.username}") private val username: String,
-        @Value("\${security.password}") private val password: String,
-        private val jwtFilter: JwtFilter,
+    @Value("\${security.username}") private val username: String,
+    @Value("\${security.password}") private val password: String,
+    private val jwtFilter: JwtFilter,
 ) {
 
     @Bean
     fun userDetailsService() = MapReactiveUserDetailsService(
-            User.withUsername(username)
-                    .password(password)
-                    .build()
+        User.withUsername(username)
+            .password(password)
+            .build()
     )
 
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         http.authorizeExchange { auth ->
             auth
-                    .pathMatchers("/auth/login").permitAll()
-                    .anyExchange().denyAll()
+                .pathMatchers("/auth/login").permitAll()
+                .pathMatchers("/records/**").authenticated()
+                .anyExchange().denyAll()
         }
-                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.HTTP_BASIC)
-                .exceptionHandling { handler ->
-                    handler.authenticationEntryPoint { exchange, ex ->
-                        Mono.fromRunnable {
-                            exchange.response.statusCode = HttpStatus.UNAUTHORIZED
-                        }
-                    }
-                    handler.accessDeniedHandler { exchange, denied ->
-                        Mono.fromRunnable {
-                            exchange.response.statusCode = HttpStatus.FORBIDDEN
-                        }
+            .addFilterAt(jwtFilter, SecurityWebFiltersOrder.HTTP_BASIC)
+            .exceptionHandling { handler ->
+                handler.authenticationEntryPoint { exchange, ex ->
+                    Mono.fromRunnable {
+                        exchange.response.statusCode = HttpStatus.UNAUTHORIZED
                     }
                 }
-                .httpBasic { it.disable() }
-                .formLogin { it.disable() }
-                .csrf { it.disable() }
+                handler.accessDeniedHandler { exchange, denied ->
+                    Mono.fromRunnable {
+                        exchange.response.statusCode = HttpStatus.FORBIDDEN
+                    }
+                }
+            }
+            .httpBasic { it.disable() }
+            .formLogin { it.disable() }
+            .csrf { it.disable() }
         return http.build()
     }
 }

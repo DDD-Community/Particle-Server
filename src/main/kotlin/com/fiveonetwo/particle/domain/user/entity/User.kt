@@ -13,6 +13,7 @@ class User(
     private var id: String = "-1",
     val provider: String,
     val identifier: String,
+    val nickname : String,
 ) : Persistable<String> {
     override fun getId(): String = id
     override fun isNew(): Boolean {

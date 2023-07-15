@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-interface R2dbcUserRepository : R2dbcRepository<User, String> {
+interface UserRepository : R2dbcRepository<User, String> {
     suspend fun existsByProviderAndIdentifier(provider: String, identifier: String): Boolean
     suspend fun findUserByProviderAndAndIdentifier(provider: String, identifier: String): User?
 }

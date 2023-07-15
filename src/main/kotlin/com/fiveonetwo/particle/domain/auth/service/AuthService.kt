@@ -12,23 +12,26 @@ import java.time.temporal.ChronoUnit
 
 @Service
 class AuthService(
-        private val userService: UserService,
-        private val tokenProvider: TokenProvider,
-        private val redisAdapter: RedisAdapter,
+    private val userService: UserService,
+    private val tokenProvider: TokenProvider,
+    private val redisAdapter: RedisAdapter,
 ) {
-
     suspend fun login(login: LoginDTO): TokenDTO {
         val read = if (userService.isExistUser(login.provider, login.identifier)) {
             userService.findUserByProviderAndIdentifier(login.provider, login.identifier)
         } else {
-            userService.createUser(UserCreateDTO(login.provider, login.identifier))
+            userService.createUser(UserCreateDTO(login.provider, login.identifier, login.nickname))
         }
 
         return TokenDTO(
-                accessToken = tokenProvider.createAccessToken(subject = read.id),
-                refreshToken = tokenProvider.createRefreshToken(subject = read.id)
+            accessToken = tokenProvider.createAccessToken(subject = read.id),
+            refreshToken = tokenProvider.createRefreshToken(subject = read.id)
         ).also { tokens ->
-            redisAdapter.set(read.id, tokens.refreshToken, Duration.of(tokenProvider.refreshDuration, ChronoUnit.MILLIS))
+            redisAdapter.set(
+                read.id,
+                tokens.refreshToken,
+                Duration.of(tokenProvider.refreshDuration, ChronoUnit.MILLIS)
+            )
         }
     }
 }
