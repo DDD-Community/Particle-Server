@@ -1,4 +1,4 @@
-package com.fiveonetwo.particle.domain.user.entity
+package com.fiveonetwo.particle.domain.tag.entity
 
 import com.fiveonetwo.particle.shared.utils.uuid
 import org.springframework.data.annotation.Id
@@ -6,18 +6,24 @@ import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
-@Table(name = "users")
-class User(
+
+@Table("record_tags")
+class RecordTag(
     @Id
-    @Column("user_id")
+    @Column("record_tag_id")
     private var id: String = "-1",
-    val provider: String,
-    val identifier: String,
+    val value: RecordTagValue,
+    val recordId: String,
 ) : Persistable<String> {
     override fun getId(): String = id
+
     override fun isNew(): Boolean {
-        val result = ("-1" == id)
+        val isNew = id == "-1"
         id = uuid()
-        return result
+        return isNew
     }
+}
+
+enum class RecordTagValue {
+    UXUI, BRANDING, MARCKETING, DEVELOPMENT
 }
