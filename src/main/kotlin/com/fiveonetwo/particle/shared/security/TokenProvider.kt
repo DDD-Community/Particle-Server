@@ -20,8 +20,8 @@ class TokenProvider(
         private val template: StringRedisTemplate
 ) {
     private val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
-    private val accessDuration: Long = 1000 * 60 * 60 * 24 * 10
-    private val refreshDuration: Long = 1000 * 60 * 60 * 24 * 20
+    val accessDuration: Long = 1000 * 60 * 60 * 24 * 10
+    val refreshDuration: Long = 1000 * 60 * 60 * 24 * 20
 
     fun generateToken(username: String, time: Long): String = Jwts.builder().signWith(key)
             .setSubject(username)
@@ -46,5 +46,6 @@ class TokenProvider(
     fun saveRefreshToken(username: String, token: String) {
         template.opsForValue().set(username, token, Duration.of(7, ChronoUnit.DAYS))
     }
+
     fun getSubjectFromToken(token: String): String = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body.subject
 }

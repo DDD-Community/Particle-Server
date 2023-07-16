@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = ["com.fiveonetwo.particle.domain.*.repository"])
 @EnableJpaAuditing
 class JpaConfig
