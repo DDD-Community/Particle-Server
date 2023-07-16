@@ -17,4 +17,12 @@ class RecordHandler(
     suspend fun createRecord(request: ServerRequest): ServerResponse =
         recordService.createRecord(request.principal().awaitSingle().name, request.awaitBody<RecordCreateDTO>())
             .let { ServerResponse.ok().bodyValueAndAwait(it) }
+
+    suspend fun getRecordById(request: ServerRequest): ServerResponse =
+        recordService.getRecordById(request.pathVariable("recordId"))
+            .let { ServerResponse.ok().bodyValueAndAwait(it) }
+
+    suspend fun getMyRecords(request: ServerRequest): ServerResponse =
+        recordService.getMyRecords(request.principal().awaitSingle().name)
+            .let { ServerResponse.ok().bodyValueAndAwait(it) }
 }

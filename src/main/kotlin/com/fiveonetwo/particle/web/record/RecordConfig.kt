@@ -9,12 +9,12 @@ import org.springframework.web.reactive.function.server.coRouter
 class RecordConfig(
     private val recordHandler: RecordHandler
 ) {
-
     @Bean
     fun recordRouter() = coRouter {
         "/records".nest {
-            POST("") { reqeust -> recordHandler.createRecord(reqeust) }
+            POST("/") { request -> recordHandler.createRecord(request) }
+            GET("/{recordId}") { request -> recordHandler.getRecordById(request) }
+            GET("/my") { request -> recordHandler.getMyRecords(request) }
         }
     }
-
 }

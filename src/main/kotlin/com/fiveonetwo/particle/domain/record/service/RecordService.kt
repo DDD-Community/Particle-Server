@@ -27,4 +27,20 @@ class RecordService(
         recordTagRepository.saveAll(tags).collectList().awaitSingle()
         return RecordReadDTO.from(record, items, tags)
     }
+
+    @Transactional(readOnly = true)
+    suspend fun getRecordById(recordId: String): RecordReadDTO =
+        recordRepository.findById(recordId).awaitSingle().let { record ->
+            val items = recordItemRepository.getAllByRecordId(recordId).collectList().awaitSingle()
+            val tags = recordTagRepository.getAllByRecordId(recordId).collectList().awaitSingle()
+            RecordReadDTO.from(record, items, tags)
+        }
+
+    @Transactional(readOnly = true)
+    suspend fun getMyRecords(loginId: String): List<RecordReadDTO> =
+        recordRepository.getAllByUserId(loginId).collectList().awaitSingle().map { record ->
+            val items = recordItemRepository.getAllByRecordId(record.id).collectList().awaitSingle()
+            val tags = recordTagRepository.getAllByRecordId(record.id).collectList().awaitSingle()
+            RecordReadDTO.from(record, items, tags)
+        }
 }
