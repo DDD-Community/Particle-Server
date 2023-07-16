@@ -22,6 +22,10 @@ class Record(
         @CreatedDate
         @Column(name = "created_at")
         val createdAt: LocalDateTime = LocalDateTime.now(),
+        @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        val items: MutableList<RecordItem> = mutableListOf(),
+        @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        val tags : MutableList<RecordTag> = mutableListOf(),
 )
 
 @Table(name = "record_tags")
