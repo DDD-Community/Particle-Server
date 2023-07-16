@@ -2,7 +2,6 @@ package com.fiveonetwo.particle.domain.record.dto
 
 import com.fiveonetwo.particle.domain.record.entity.Record
 import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
-import com.fiveonetwo.particle.domain.user.entity.User
 import java.time.LocalDateTime
 
 class RecordReadDTO(
