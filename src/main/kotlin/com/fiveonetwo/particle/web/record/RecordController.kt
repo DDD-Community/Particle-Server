@@ -20,5 +20,5 @@ class RecordController(
     fun findMyRecords(principal: Principal) = recordService.findMyRecords(loginId = principal.name)
 
     @DeleteMapping("/{recordId}")
-    fun deleteRecordById(principal: Principal, @PathVariable recordId: String) = recordService.deleteRecord(loginId = principal.name, recordId = recordId)
+    fun deleteRecordById(principal: Principal, @PathVariable recordId: String) : String = recordService.deleteRecord(loginId = principal.name, recordId = recordId)
 }

@@ -22,11 +22,12 @@ class RecordService(
                 .let { record -> RecordReadDTO.from(record) }
     }
 
-    fun deleteRecord(loginId: String, recordId: String) {
+    fun deleteRecord(loginId: String, recordId: String): String {
         val user = userRepository.findByIdOrNull(loginId) ?: throw UserNotFoundException()
         val record = recordRepository.findByIdOrNull(recordId) ?: throw RecordNotFoundException()
         if (record.user.id != user.id) throw IllegalAccessException()
         recordRepository.deleteById(recordId)
+        return record.id
     }
 
     @Transactional(readOnly = true)
