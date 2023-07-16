@@ -2,7 +2,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:latest
-    container_name: mysql
+    container_name: particle-mysql-server
     environment:
       MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: particle
@@ -12,3 +12,27 @@ services:
       - ./mysql/data:/var/lib/mysql
     ports:
       - "3666:3306"
+    restart: always
+    networks:
+      - particle-network
+
+  redis:
+    image: redis:latest
+    container_name: particle-redis-server
+    restart: always
+    ports:
+      - "7766:6379"
+    networks:
+      - particle-network
+
+  web:
+    build: .
+    restart: always
+    container_name: particle-web-server
+    ports:
+      - "8555:8555"
+    networks:
+      - particle-network
+
+networks:
+  particle-network:
