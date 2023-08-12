@@ -18,51 +18,54 @@ import jakarta.persistence.Table
 @Table(name = "records")
 @Entity
 class Record(
-        @Id
-        @Column(name = "record_id", nullable = false)
-        val id: String = uuid(),
-        @ManyToOne(targetEntity = User::class, fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id", nullable = false)
-        val user: User,
-        @Column(name = "title", nullable = false, columnDefinition = "text")
-        val title: String,
-        @Column(name = "url", nullable = false, columnDefinition = "text")
-        val url: String,
-        @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val items: MutableList<RecordItem> = mutableListOf(),
-        @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        val tags: MutableList<RecordTag> = mutableListOf(),
+    @Id
+    @Column(name = "record_id", nullable = false)
+    val id: String = uuid(),
+    @ManyToOne(targetEntity = User::class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User,
+    @Column(name = "title", nullable = false, columnDefinition = "text")
+    val title: String,
+    @Column(name = "url", nullable = false, columnDefinition = "text")
+    val url: String,
+    @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val items: MutableList<RecordItem> = mutableListOf(),
+    @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val tags: MutableList<RecordTag> = mutableListOf(),
 ) : BaseTimeEntity()
 
 @Table(name = "record_tags")
 @Entity
 class RecordTag(
-        @Id
-        @Column(name = "record_tag_id", nullable = false)
-        val id: String = uuid(),
-        @ManyToOne(targetEntity = Record::class, fetch = FetchType.LAZY)
-        @JoinColumn(name = "record_id", nullable = false)
-        val record: Record,
-        @Enumerated(value = EnumType.STRING)
-        @Column(name = "value", nullable = false)
-        val value: RecordTagValue,
+    @Id
+    @Column(name = "record_tag_id", nullable = false)
+    val id: String = uuid(),
+    @ManyToOne(targetEntity = Record::class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "record_id", nullable = false)
+    val record: Record,
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "value", nullable = false)
+    val value: RecordTagValue,
 )
 
 enum class RecordTagValue {
-    UXUI, DEVELOPEMENT, DESIGN, MARKETING
+    UXUI, BRANDING, GRAPHIC, INDUSTRY, // 디자인
+    IOS, ANDROID, WEB, SERVER, AI, DATA, // 개발
+    HR, TREND, INVEST, // 스타트업
+    GROWTH, CONTENTS // 마케팅
 }
 
 @Table(name = "record_items")
 @Entity
 class RecordItem(
-        @Id
-        @Column(name = "record_item_id", nullable = false)
-        val id: String = uuid(),
-        @ManyToOne(targetEntity = Record::class, fetch = FetchType.LAZY)
-        @JoinColumn(name = "record_id", nullable = false)
-        val record: Record,
-        @Column(name = "content", nullable = false, columnDefinition = "text")
-        val content: String,
-        @Column(name = "is_main", nullable = false)
-        val isMain: Boolean = false,
+    @Id
+    @Column(name = "record_item_id", nullable = false)
+    val id: String = uuid(),
+    @ManyToOne(targetEntity = Record::class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "record_id", nullable = false)
+    val record: Record,
+    @Column(name = "content", nullable = false, columnDefinition = "text")
+    val content: String,
+    @Column(name = "is_main", nullable = false)
+    val isMain: Boolean = false,
 )
