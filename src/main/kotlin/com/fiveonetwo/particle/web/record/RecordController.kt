@@ -1,16 +1,26 @@
 package com.fiveonetwo.particle.web.record
 
+import com.fiveonetwo.particle.application.record.RecordQueryApplication
 import com.fiveonetwo.particle.domain.record.dto.RecordCreateDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordUpdateDTO
 import com.fiveonetwo.particle.domain.record.service.RecordService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
 @RestController
 @RequestMapping("/api/v1/record")
 class RecordController(
-    private val recordService: RecordService
+    private val recordService: RecordService,
+    private val recordQueryApplication: RecordQueryApplication,
 ) {
     @GetMapping("/{recordId}")
     fun findRecordById(@PathVariable recordId: String) = recordService.findRecordById(recordId = recordId)
@@ -36,4 +46,10 @@ class RecordController(
 
     @PostMapping("")
     fun createRecord(principal: Principal, @RequestBody create: RecordCreateDTO) = recordService.createRecord(principal.name, create)
+
+    @GetMapping("/search")
+    fun searchMyRecordByTitle(
+        principal: Principal,
+        @RequestParam title: String,
+    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordsByTitle(principal.name, title)
 }
