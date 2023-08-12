@@ -46,8 +46,10 @@ class RecordService(
 
     fun findMyRecords(loginId: String): List<RecordReadDTO> {
         val user = userService.mustFindById(loginId)
-        return recordRepository.findAllByUser(user).map { record -> RecordReadDTO.from(record) }
+        return recordRepository.findAllByUserOrderByCreatedAtDesc(user).map { record -> RecordReadDTO.from(record) }
     }
+
+    fun findMyRecords(loginUser: User): List<Record> = recordRepository.findAllByUserOrderByCreatedAtDesc(user = loginUser)
 
     fun mustFindById(recordId: String) = recordRepository.findByIdOrNull(recordId) ?: throw RecordNotFoundException()
 
