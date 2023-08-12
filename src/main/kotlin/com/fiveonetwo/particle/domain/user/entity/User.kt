@@ -24,8 +24,10 @@ class User(
     val provider: String,
     @Column(name = "identifier", nullable = false, columnDefinition = "text")
     val identifier: String,
+    @Column(name = "profile_image_url", columnDefinition = "text")
+    val profileImageUrl: String = "https://ddd-particle-bucket.s3.ap-northeast-2.amazonaws.com/default_image.png",
     @Column(name = "recommend_tags", nullable = false)
-    val interestedTags: MutableList<RecordTagValue> = mutableListOf()
+    val interestedTags: MutableList<RecordTagValue> = mutableListOf(),
 ) : BaseTimeEntity()
 
 fun createRandomUsername(): String {
