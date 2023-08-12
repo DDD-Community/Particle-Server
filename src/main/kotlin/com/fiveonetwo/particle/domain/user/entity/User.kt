@@ -1,6 +1,7 @@
 package com.fiveonetwo.particle.domain.user.entity
 
 import com.fiveonetwo.particle.domain.common.entity.BaseTimeEntity
+import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
 import com.fiveonetwo.particle.domain.user.entity.UsernameContext.Companion.Color
 import com.fiveonetwo.particle.domain.user.entity.UsernameContext.Companion.Figure
 import com.fiveonetwo.particle.shared.utils.uuid
@@ -23,6 +24,8 @@ class User(
     val provider: String,
     @Column(name = "identifier", nullable = false, columnDefinition = "text")
     val identifier: String,
+    @Column(name = "recommend_tags", nullable = false)
+    val interestedTags: MutableList<RecordTagValue> = mutableListOf()
 ) : BaseTimeEntity()
 
 fun createRandomUsername(): String {

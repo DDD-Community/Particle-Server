@@ -1,5 +1,6 @@
 package com.fiveonetwo.particle.domain.user.service
 
+import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
 import com.fiveonetwo.particle.domain.user.dto.UserCreateDTO
 import com.fiveonetwo.particle.domain.user.dto.UserReadDTO
 import com.fiveonetwo.particle.domain.user.entity.User
@@ -34,5 +35,11 @@ class UserService(
         var newUserId = nextId()
         while (userRepository.existsById(newUserId)) newUserId = nextId()
         return newUserId
+    }
+
+    @Transactional
+    fun updateInterestedTags(user: User, interestedTags: List<RecordTagValue>) {
+        user.interestedTags.clear()
+        user.interestedTags.addAll(interestedTags)
     }
 }
