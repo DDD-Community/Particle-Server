@@ -59,4 +59,9 @@ class RecordController(
         principal: Principal,
         @RequestParam tagValue: RecordTagValue,
     ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordByTag(principal.name, tagValue)
+
+    @GetMapping("/search/url/title")
+    fun searchRecordUrlTitle(
+        @RequestParam url: String
+    ): String = recordQueryApplication.searchRecordUrlTitle(url = url)
 }
