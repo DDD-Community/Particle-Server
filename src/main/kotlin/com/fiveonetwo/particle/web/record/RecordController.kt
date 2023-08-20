@@ -1,5 +1,6 @@
 package com.fiveonetwo.particle.web.record
 
+import com.fiveonetwo.particle.application.record.RecordCommandApplication
 import com.fiveonetwo.particle.application.record.RecordQueryApplication
 import com.fiveonetwo.particle.domain.record.dto.RecordCreateDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
@@ -22,12 +23,18 @@ import java.security.Principal
 class RecordController(
     private val recordService: RecordService,
     private val recordQueryApplication: RecordQueryApplication,
+    private val recordCommandApplication: RecordCommandApplication,
 ) {
     @GetMapping("/{recordId}")
-    fun findRecordById(@PathVariable recordId: String) = recordService.findRecordById(recordId = recordId)
+    fun findRecordById(
+        @PathVariable
+        recordId: String
+    ): RecordReadDTO = recordQueryApplication.findRecordById(recordId = recordId)
 
     @GetMapping("/my")
-    fun findMyRecords(principal: Principal) = recordService.findMyRecords(loginId = principal.name)
+    fun findMyRecords(
+        principal: Principal
+    ): List<RecordReadDTO> = recordQueryApplication.findMyRecords(loginId = principal.name)
 
     @PutMapping("/{recordId}")
     fun updateRecord(
@@ -36,32 +43,39 @@ class RecordController(
         update: RecordUpdateDTO,
         @PathVariable
         recordId: String,
-    ): RecordReadDTO = recordService.updateRecord(principal.name, recordId, update)
+    ): RecordReadDTO = recordCommandApplication.updateMyRecord(loginId = principal.name, recordId = recordId, update = update)
 
     @DeleteMapping("/{recordId}")
     fun deleteRecordById(
         principal: Principal,
         @PathVariable
         recordId: String,
-    ): String = recordService.deleteRecord(loginId = principal.name, recordId = recordId)
+    ): String = recordCommandApplication.deleteMyRecord(loginId = principal.name, recordId = recordId)
 
     @PostMapping("")
-    fun createRecord(principal: Principal, @RequestBody create: RecordCreateDTO) = recordService.createRecord(principal.name, create)
+    fun createRecord(
+        principal: Principal,
+        @RequestBody
+        create: RecordCreateDTO
+    ): RecordReadDTO = recordService.createRecord(loginId = principal.name, create = create)
 
     @GetMapping("/search/by/title")
     fun searchMyRecordByTitle(
         principal: Principal,
-        @RequestParam title: String,
-    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordsByTitle(principal.name, title)
+        @RequestParam
+        title: String,
+    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordsByTitle(loginId = principal.name, title = title)
 
     @GetMapping("/search/by/tag")
     fun searchMyRecordByTag(
         principal: Principal,
-        @RequestParam tagValue: RecordTagValue,
-    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordByTag(principal.name, tagValue)
+        @RequestParam
+        tagValue: RecordTagValue,
+    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordByTag(loginId = principal.name, tagValue = tagValue)
 
     @GetMapping("/search/url/title")
     fun searchRecordUrlTitle(
-        @RequestParam url: String
+        @RequestParam
+        url: String,
     ): String = recordQueryApplication.searchRecordUrlTitle(url = url)
 }

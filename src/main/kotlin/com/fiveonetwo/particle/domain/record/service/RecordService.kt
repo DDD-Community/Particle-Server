@@ -35,6 +35,9 @@ class RecordService(
     }
 
     @Transactional
+    fun deleteRecord(recordId :String) = recordRepository.deleteById(recordId)
+
+    @Transactional
     fun updateRecord(loginId: String, recordId: String, update: RecordUpdateDTO): RecordReadDTO {
         val user = userService.mustFindById(loginId)
         recordRepository.deleteById(recordId)
@@ -55,4 +58,6 @@ class RecordService(
 
     fun findAllByUserAndContainTitle(user: User, title: String): List<Record> =
         recordRepository.findAllByUserAndTitleLikeOrderByCreatedAtDesc(user, "$title%")
+
+    fun save(record: Record): Record = recordRepository.save(record)
 }

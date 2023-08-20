@@ -25,14 +25,19 @@ class Record(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
     @Column(name = "title", nullable = false, columnDefinition = "text")
-    val title: String,
+    var title: String,
     @Column(name = "url", nullable = false, columnDefinition = "text")
-    val url: String,
+    var url: String,
     @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    val items: MutableList<RecordItem> = mutableListOf(),
+    var items: MutableList<RecordItem> = mutableListOf(),
     @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    val tags: MutableList<RecordTag> = mutableListOf(),
-) : BaseTimeEntity()
+    var tags: MutableList<RecordTag> = mutableListOf(),
+) : BaseTimeEntity() {
+    fun update(title: String = this.title, url: String = this.url) {
+        this.title = title
+        this.url = url
+    }
+}
 
 @Table(name = "record_tags")
 @Entity

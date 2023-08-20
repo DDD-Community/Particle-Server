@@ -26,4 +26,12 @@ class RecordQueryApplication(
     }
 
     fun searchRecordUrlTitle(url: String): String = UrlScraper.readTitle(url = url)
+
+    fun findRecordById(recordId: String): RecordReadDTO =
+        recordService.mustFindById(recordId).let { record -> RecordReadDTO.from(record) }
+
+    fun findMyRecords(loginId:String): List<RecordReadDTO> {
+        val loginUser = userService.mustFindById(loginId)
+        return recordService.findMyRecords(loginUser).map { record-> RecordReadDTO.from(record) }
+    }
 }
