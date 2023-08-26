@@ -5,7 +5,7 @@ import com.fiveonetwo.particle.application.record.RecordQueryApplication
 import com.fiveonetwo.particle.domain.record.dto.RecordCreateDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordUpdateDTO
-import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
+import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -70,8 +70,8 @@ class RecordController(
     fun searchMyRecordByTag(
         principal: Principal,
         @RequestParam
-        tagValue: RecordTagValue,
-    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordByTag(loginId = principal.name, tagValue = tagValue)
+        tag: Tag,
+    ): List<RecordReadDTO> = recordQueryApplication.searchMyRecordByTag(loginId = principal.name, searchTag = tag)
 
     @GetMapping("/search/url/title")
     fun searchRecordUrlTitle(

@@ -50,14 +50,37 @@ class RecordTag(
     val record: Record,
     @Enumerated(value = EnumType.STRING)
     @Column(name = "value", nullable = false)
-    val value: RecordTagValue,
+    val value: Tag,
 )
 
-enum class RecordTagValue {
-    UXUI, BRANDING, GRAPHIC, INDUSTRY, // 디자인
-    IOS, ANDROID, WEB, SERVER, AI, DATA, // 개발
-    HR, TREND, INVEST, // 스타트업
-    GROWTH, CONTENTS // 마케팅
+enum class Tag(
+    val value: String
+) {
+    BRANDING("브랜딩"),
+    UXUI("UXUI"),
+    GRAPHIC("그래픽 디자인"),
+    INDUSTRY("산업 디자인"),
+
+    IOS("iOS"),
+    ANDROID("Android"),
+    WEB("Web"),
+    SERVER("서버"),
+    AI("AI"),
+
+    SERVICE_PLAN("서비스 기획"),
+    STRATEGY_PLAN("전략 기획"),
+    SYSTEM_PLAN("서비스 기획"),
+    DATA_ANAL("데이터 분석"),
+
+    COMPANY_CULTURE("조직 문화"),
+    TREND("트렌드"),
+    CX("CX"),
+    LEADERSHIP("리더쉽"),
+    INSIGHT("인사이트"),
+
+    BRANDING_MARKETING("브랜드 마케팅"),
+    GROWTH_MARKETING("그로스 마케팅"),
+    CONTENTS_MARKETING("콘텐츠 마케팅"),
 }
 
 @Table(name = "record_items")

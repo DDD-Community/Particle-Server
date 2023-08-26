@@ -1,7 +1,7 @@
 package com.fiveonetwo.particle.domain.user.entity
 
 import com.fiveonetwo.particle.domain.common.entity.BaseTimeEntity
-import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
+import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.user.entity.UsernameContext.Companion.Color
 import com.fiveonetwo.particle.domain.user.entity.UsernameContext.Companion.Figure
 import com.fiveonetwo.particle.shared.utils.uuid
@@ -27,7 +27,7 @@ class User(
     @Column(name = "profile_image_url", columnDefinition = "text")
     val profileImageUrl: String = "https://ddd-particle-bucket.s3.ap-northeast-2.amazonaws.com/default_image.png",
     @Column(name = "recommend_tags", nullable = false)
-    val interestedTags: MutableList<RecordTagValue> = mutableListOf(),
+    val interestedTags: MutableList<Tag> = mutableListOf(),
 ) : BaseTimeEntity()
 
 fun createRandomUsername(): String {

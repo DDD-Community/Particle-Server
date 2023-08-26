@@ -2,7 +2,7 @@ package com.fiveonetwo.particle.web.user
 
 import com.fiveonetwo.particle.application.user.UserCommandApplication
 import com.fiveonetwo.particle.application.user.UserQueryApplication
-import com.fiveonetwo.particle.domain.record.entity.RecordTagValue
+import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.user.dto.UserReadDTO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -21,7 +21,7 @@ class UserController(
     fun updateInterestedTags(
         principal: Principal,
         @RequestParam
-        interestedTags: List<RecordTagValue>
+        interestedTags: List<Tag>
     ): UserReadDTO = userCommandApplication.updateMyInterestedTags(
         loginId = principal.name,
         interestedTags = interestedTags
