@@ -5,6 +5,7 @@ import com.fiveonetwo.particle.domain.record.entity.RecordItem
 import com.fiveonetwo.particle.domain.record.entity.RecordTag
 import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.user.entity.User
+import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
 
 
 class RecordUpdateDTO(
@@ -19,6 +20,13 @@ class RecordUpdateDTO(
             url = record.url,
             items = record.items.map { RecordItemUpdateDTO(it.content, it.isMain) },
             tags = record.tags.map { it.value },
+        )
+
+        fun from(request: RecordUpdateRequest): RecordUpdateDTO = RecordUpdateDTO(
+            title = request.title,
+            url = request.url,
+            items = request.items.map { item -> RecordItemUpdateDTO(content = item.content, isMain = item.isMain) },
+            tags = request.tags.map { tag -> Tag.originalValueOf(tag) }
         )
     }
 

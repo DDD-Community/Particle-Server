@@ -10,6 +10,7 @@ import com.fiveonetwo.particle.domain.user.service.UserService
 import com.fiveonetwo.particle.shared.security.exception.AuthorizationException
 import com.fiveonetwo.particle.web.record.dto.RecordCreateRequest
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
+import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
 import org.springframework.stereotype.Component
 
 
@@ -24,15 +25,15 @@ class RecordCommandApplication(
             create = RecordCreateDTO.from(request)
         ).let { dto -> RecordReadResponse.from(dto) }
 
-    fun updateMyRecord(loginId: String, recordId: String, update: RecordUpdateDTO): RecordReadResponse {
+    fun updateMyRecord(loginId: String, recordId: String, update: RecordUpdateRequest): RecordReadResponse {
         val loginUser = userService.mustFindById(userId = loginId)
         val record = recordService.mustFindById(recordId)
-
+        val dto = RecordUpdateDTO.from(update)
         if (validate(user = loginUser, record = record))
             throw AuthorizationException()
 
         recordService.deleteRecord(recordId)
-        return recordService.save(update.toRecord(loginUser))
+        return recordService.save(dto.toRecord(loginUser))
             .let { entity -> RecordReadDTO.from(entity) }
             .let { dto -> RecordReadResponse.from(dto = dto) }
     }

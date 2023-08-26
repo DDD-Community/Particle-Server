@@ -7,6 +7,7 @@ import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.web.record.dto.RecordCreateRequest
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
+import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -40,10 +41,14 @@ class RecordController(
     fun updateRecord(
         principal: Principal,
         @RequestBody
-        update: RecordUpdateDTO,
+        update: RecordUpdateRequest,
         @PathVariable
         recordId: String,
-    ): RecordReadResponse = recordCommandApplication.updateMyRecord(loginId = principal.name, recordId = recordId, update = update)
+    ): RecordReadResponse = recordCommandApplication.updateMyRecord(
+        loginId = principal.name,
+        recordId = recordId,
+        update = update
+    )
 
     @DeleteMapping("/{recordId}")
     fun deleteRecordById(
