@@ -2,9 +2,7 @@ package com.fiveonetwo.particle.web.record
 
 import com.fiveonetwo.particle.application.record.RecordCommandApplication
 import com.fiveonetwo.particle.application.record.RecordQueryApplication
-import com.fiveonetwo.particle.domain.record.dto.RecordUpdateDTO
 import com.fiveonetwo.particle.domain.record.entity.Tag
-import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.web.record.dto.RecordCreateRequest
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
 import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
@@ -22,7 +20,6 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1/record")
 class RecordController(
-    private val recordService: RecordService,
     private val recordQueryApplication: RecordQueryApplication,
     private val recordCommandApplication: RecordCommandApplication,
 ) {

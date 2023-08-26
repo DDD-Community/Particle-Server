@@ -1,7 +1,5 @@
 package com.fiveonetwo.particle.web.record.dto
 
-import com.fiveonetwo.particle.domain.record.entity.Tag
-
 class RecordUpdateRequest(
     val title: String,
     val url: String,

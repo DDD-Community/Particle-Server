@@ -14,7 +14,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import java.lang.IllegalArgumentException
 
 @Table(name = "records")
 @Entity
