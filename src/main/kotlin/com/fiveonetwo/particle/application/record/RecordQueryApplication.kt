@@ -5,6 +5,7 @@ import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.scrap.UrlScraper
 import com.fiveonetwo.particle.domain.user.service.UserService
+import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,26 +13,29 @@ class RecordQueryApplication(
     private val recordService: RecordService,
     private val userService: UserService,
 ) {
-    fun searchMyRecordsByTitle(loginId: String, title: String): List<RecordReadDTO> {
-        val loginUser = userService.mustFindById(loginId)
-        return recordService.findAllByUserAndContainTitle(loginUser, title).map { record -> RecordReadDTO.from(record) }
-    }
+    fun searchMyRecordsByTitle(loginId: String, title: String): List<RecordReadResponse> =
+        recordService.findAllByUserAndContainTitle(
+            user = userService.mustFindById(loginId),
+            title = title
+        )
+            .map { record -> RecordReadDTO.from(record) }
+            .map { dto -> RecordReadResponse.from(dto) }
 
-    fun searchMyRecordByTag(loginId: String, searchTag: Tag): List<RecordReadDTO> {
-        val loginUser = userService.mustFindById(loginId)
-
-        return recordService.findMyRecords(loginUser)
+    fun searchMyRecordByTag(loginId: String, searchTag: Tag): List<RecordReadResponse> =
+        recordService.findMyRecords(loginUser = userService.mustFindById(loginId))
             .filter { record -> record.tags.find { tag -> tag.value == searchTag } != null } // 해당 태그가 포함된 정보 필터링
             .map { record -> RecordReadDTO.from(record) }
-    }
+            .map { dto -> RecordReadResponse.from(dto) }
 
     fun searchRecordUrlTitle(url: String): String = UrlScraper.readTitle(url = url)
 
-    fun findRecordById(recordId: String): RecordReadDTO =
-        recordService.mustFindById(recordId).let { record -> RecordReadDTO.from(record) }
+    fun findRecordById(recordId: String): RecordReadResponse =
+        recordService.mustFindById(recordId)
+            .let { record -> RecordReadDTO.from(record) }
+            .let { dto -> RecordReadResponse.from(dto) }
 
-    fun findMyRecords(loginId: String): List<RecordReadDTO> {
-        val loginUser = userService.mustFindById(loginId)
-        return recordService.findMyRecords(loginUser).map { record -> RecordReadDTO.from(record) }
-    }
+    fun findMyRecords(loginId: String): List<RecordReadResponse> =
+        recordService.findMyRecords(loginUser = userService.mustFindById(loginId))
+            .map { record -> RecordReadDTO.from(record) }
+            .map { dto -> RecordReadResponse.from(dto) }
 }

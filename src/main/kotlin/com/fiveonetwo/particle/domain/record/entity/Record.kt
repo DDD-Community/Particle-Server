@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.lang.IllegalArgumentException
 
 @Table(name = "records")
 @Entity
@@ -80,7 +81,18 @@ enum class Tag(
 
     BRANDING_MARKETING("브랜드 마케팅"),
     GROWTH_MARKETING("그로스 마케팅"),
-    CONTENTS_MARKETING("콘텐츠 마케팅"),
+    CONTENTS_MARKETING("콘텐츠 마케팅");
+
+    companion object {
+        fun originalValueOf(value: String): Tag {
+            for (tag in values()) {
+                if (tag.value == value) {
+                    return tag
+                }
+            }
+            throw IllegalArgumentException("tag value is incorrect")
+        }
+    }
 }
 
 @Table(name = "record_items")

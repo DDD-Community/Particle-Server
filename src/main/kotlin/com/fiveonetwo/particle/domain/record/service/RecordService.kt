@@ -20,10 +20,8 @@ class RecordService(
 ) {
     // command
     @Transactional
-    fun createRecord(loginId: String, create: RecordCreateDTO): RecordReadDTO {
-        val user = userService.mustFindById(loginId)
-        return recordRepository.save(create.toRecord(user = user)).let { record -> RecordReadDTO.from(record) }
-    }
+    fun createRecord(user: User, create: RecordCreateDTO): RecordReadDTO = recordRepository.save(create.toRecord(user = user))
+        .let { record -> RecordReadDTO.from(record) }
 
     @Transactional
     fun deleteRecord(loginId: String, recordId: String): String {
@@ -35,7 +33,7 @@ class RecordService(
     }
 
     @Transactional
-    fun deleteRecord(recordId :String) = recordRepository.deleteById(recordId)
+    fun deleteRecord(recordId: String) = recordRepository.deleteById(recordId)
 
     @Transactional
     fun updateRecord(loginId: String, recordId: String, update: RecordUpdateDTO): RecordReadDTO {
