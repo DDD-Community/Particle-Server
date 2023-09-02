@@ -70,7 +70,7 @@ enum class Tag(
     SERVICE_PLAN("서비스 기획"),
     STRATEGY_PLAN("전략 기획"),
     SYSTEM_PLAN("서비스 기획"),
-    DATA_ANAL("데이터 분석"),
+    DATA_ANALYZE("데이터 분석"),
 
     COMPANY_CULTURE("조직 문화"),
     TREND("트렌드"),

@@ -3,7 +3,8 @@ package com.fiveonetwo.particle.web.user
 import com.fiveonetwo.particle.application.user.UserCommandApplication
 import com.fiveonetwo.particle.application.user.UserQueryApplication
 import com.fiveonetwo.particle.domain.record.entity.Tag
-import com.fiveonetwo.particle.domain.user.dto.UserReadDTO
+import com.fiveonetwo.particle.domain.tag.error.TagConvertException
+import com.fiveonetwo.particle.web.user.dto.UserReadResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,14 +22,22 @@ class UserController(
     fun updateInterestedTags(
         principal: Principal,
         @RequestParam
-        interestedTags: List<Tag>
-    ): UserReadDTO = userCommandApplication.updateMyInterestedTags(
+        interestedTags: List<String>
+    ): UserReadResponse = userCommandApplication.updateMyInterestedTags(
         loginId = principal.name,
-        interestedTags = interestedTags
+        interestedTags = convert(interestedTags)
     )
+
+    private fun convert(tagValues: List<String>): List<Tag> {
+        return try {
+            tagValues.map { tag -> Tag.originalValueOf(tag) }
+        } catch (ex: Exception) {
+            throw TagConvertException()
+        }
+    }
 
     @GetMapping("/my/profile")
     fun getMyProfile(
         principal: Principal,
-    ): UserReadDTO = userQueryApplication.getMyProfile(principal.name)
+    ): UserReadResponse = userQueryApplication.getMyProfile(principal.name)
 }
