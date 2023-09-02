@@ -25,7 +25,7 @@ class User(
     @Column(name = "identifier", nullable = false, columnDefinition = "text")
     val identifier: String,
     @Column(name = "profile_image_url", columnDefinition = "text")
-    val profileImageUrl: String = "https://ddd-particle-bucket.s3.ap-northeast-2.amazonaws.com/default_image.png",
+    val profileImageUrl: String = findUserProfileImageByNickname(nickname),
     @Column(name = "recommend_tags", nullable = false)
     val interestedTags: MutableList<Tag> = mutableListOf(),
 ) : BaseTimeEntity()
@@ -36,31 +36,49 @@ fun createRandomUsername(): String {
     return "${colors[Random.nextInt(0..colors.lastIndex)].value} ${figures[Random.nextInt(0..figures.lastIndex)].value}"
 }
 
+fun findUserProfileImageByNickname(nickname: String): String {
+    val (first, second) = nickname.split(" ")
+
+    val color = Color.originValueOf(first)
+    val figure = Figure.originValueOf(second)
+
+    return "https://ddd-particle-bucket.s3.ap-northeast-2.amazonaws.com/profile/${figure.name.lowercase()}_${color.name.lowercase()}.png"
+}
+
 class UsernameContext {
     companion object {
         enum class Color(val value: String) {
-            RED("붉은"),
-            YELLOW("노란"),
-            ORANGE("오렌지"),
+            RED("빨간"),
+            ORANGE("주황"),
+            YELLOW("노랑"),
             GREEN("초록"),
-            BLUE("파아란"),
-            PURPLE("보랏빛"),
-            PINK("핑크"),
-            MAGENTA("마젠타"),
-            CYAN("시안"),
+            BLUE("파란"),
+            PURPLE("보라"),
+            PICK("분홍");
+
+            companion object {
+                fun originValueOf(value: String): Color {
+                    return values().firstOrNull { color -> color.value == value }
+                        ?: throw IllegalArgumentException("해당하는 color tag가 없습니다.")
+                }
+            }
         }
 
         enum class Figure(val value: String) {
-            ISOSCELES_TRIANGLE("이등변삼각형"),
-            RIGHT_TRIANGLE("직각삼각형"),
-            EQUILATERAL_TRIANGLE("정삼각형"),
-            SQUARE("정사각형"),
-            ELLIPSE("타원"),
-            CIRCLE("동그라미"),
-            PARALLELOGRAM("평행사변형"),
-            TRAPEZOID("사다리꼴"),
             RECTANGLE("직사각형"),
-            RHOMBUS("마름모"),
+            TRIANGLE("세모"),
+            SQUARE("네모"),
+            CIRCLE("동그라미"),
+            PENTAGON("오각형"),
+            HEXAGON("육각형"),
+            LOZENGE("마름모");
+
+            companion object {
+                fun originValueOf(value: String): Figure {
+                    return Figure.values().firstOrNull { color -> color.value == value }
+                        ?: throw IllegalArgumentException("해당하는 color tag가 없습니다.")
+                }
+            }
         }
     }
 }
