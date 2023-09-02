@@ -2,10 +2,10 @@ package com.fiveonetwo.particle.web.record
 
 import com.fiveonetwo.particle.application.record.RecordCommandApplication
 import com.fiveonetwo.particle.application.record.RecordQueryApplication
-import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.web.record.dto.RecordCreateRequest
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
 import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Tag(name = "파티클", description = "파티클 CURD, Search 등의 기능")
 @RestController
 @RequestMapping("/api/v1/record")
 class RecordController(
@@ -72,7 +73,7 @@ class RecordController(
     fun searchMyRecordByTag(
         principal: Principal,
         @RequestParam
-        tag: Tag,
+        tag: String,
     ): List<RecordReadResponse> = recordQueryApplication.searchMyRecordByTag(loginId = principal.name, searchTag = tag)
 
     @GetMapping("/search/url/title")
