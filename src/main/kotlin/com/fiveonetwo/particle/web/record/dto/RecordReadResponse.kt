@@ -1,12 +1,15 @@
 package com.fiveonetwo.particle.web.record.dto
 
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
+import java.time.LocalDateTime
 
 class RecordReadResponse(
     val title: String,
     val url: String,
     val items: List<RecordItemCreateResponse>,
     val tags: List<String>,
+    val createdAt: LocalDateTime,
+    val createdBy: String,
 ) {
     companion object {
         fun from(dto: RecordReadDTO): RecordReadResponse {
@@ -19,7 +22,9 @@ class RecordReadResponse(
                         isMain = item.isMain
                     )
                 },
-                tags = dto.tags.map { tag -> tag.value }
+                tags = dto.tags.map { tag -> tag.value },
+                createdAt = dto.createdAt,
+                createdBy = dto.createdBy
             )
         }
     }
