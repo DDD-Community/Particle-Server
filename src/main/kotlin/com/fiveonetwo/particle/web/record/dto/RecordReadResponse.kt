@@ -4,6 +4,7 @@ import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import java.time.LocalDateTime
 
 class RecordReadResponse(
+    val id: String,
     val title: String,
     val url: String,
     val items: List<RecordItemCreateResponse>,
@@ -14,6 +15,7 @@ class RecordReadResponse(
     companion object {
         fun from(dto: RecordReadDTO): RecordReadResponse {
             return RecordReadResponse(
+                id = dto.id,
                 title = dto.title,
                 url = dto.url,
                 items = dto.items.map { item ->
