@@ -29,8 +29,8 @@ class RecordCommandApplication(
         val loginUser = userService.mustFindById(userId = loginId)
         val record = recordService.mustFindById(recordId)
         val dto = RecordUpdateDTO.from(update)
-        if (validate(user = loginUser, record = record))
-            throw AuthorizationException()
+
+        validate(user = loginUser, record = record)
 
         recordService.deleteRecord(recordId)
         return recordService.save(dto.toRecord(loginUser))
@@ -42,12 +42,13 @@ class RecordCommandApplication(
         val loginUser = userService.mustFindById(userId = loginId)
         val record = recordService.mustFindById(recordId)
 
-        if (validate(user = loginUser, record = record))
-            throw AuthorizationException()
-
+        validate(user = loginUser, record = record)
         recordService.deleteRecord(recordId)
         return recordId
     }
 
-    fun validate(user: User, record: Record): Boolean = (user.id == record.user.id)
+    fun validate(user: User, record: Record) {
+        if (user.id != record.user.id)
+            throw AuthorizationException()
+    }
 }
