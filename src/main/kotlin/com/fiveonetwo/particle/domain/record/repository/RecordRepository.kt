@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository
 interface RecordRepository : JpaRepository<Record, String> {
     fun findAllByUserOrderByCreatedAtDesc(user: User): List<Record>
     fun findAllByUserAndTitleLikeOrderByCreatedAtDesc(user: User, title: String): List<Record>
+    fun deleteAllByUser(user: User)
 }

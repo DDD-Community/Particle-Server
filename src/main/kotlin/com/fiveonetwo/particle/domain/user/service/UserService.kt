@@ -21,8 +21,6 @@ class UserService(
     fun createUser(create: UserCreateDTO) = userRepository.save(create.toUser(generatedUserId(create.provider)))
         .let { UserReadDTO.from(it) }
 
-    fun existsById(id: String) = userRepository.existsById(id)
-
     fun existsByProviderAndIdentifier(provider: String, identifier: String) = userRepository.existsByProviderAndIdentifier(provider, identifier)
 
     fun findByProviderAndIdentifier(provider: String, identifier: String) = userRepository.mustFindByProviderAndIdentifier(provider, identifier)
@@ -41,5 +39,10 @@ class UserService(
     fun updateInterestedTags(user: User, interestedTags: List<Tag>) {
         user.interestedTags.clear()
         user.interestedTags.addAll(interestedTags)
+    }
+
+    @Transactional
+    fun deleteUser(user: User) {
+        userRepository.delete(user)
     }
 }
