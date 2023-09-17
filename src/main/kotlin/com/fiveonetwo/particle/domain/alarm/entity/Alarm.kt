@@ -12,8 +12,8 @@ import jakarta.persistence.Table
 import java.time.LocalTime
 
 @Entity
-@Table(name = "alarm_config")
-class AlarmConfig(
+@Table(name = "alarm")
+class Alarm(
     @Id
     @Column(name = "alarm_config_id")
     val id: String = uuid(),
@@ -25,6 +25,5 @@ class AlarmConfig(
     @Column(name = "time")
     val time: LocalTime,
     @Column(name = "is_use")
-    val isUse: Boolean = true
-) {
-}
+    var isUse: Boolean = true
+)
