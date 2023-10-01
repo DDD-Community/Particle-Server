@@ -31,4 +31,7 @@ class AlarmController(
     ): List<AlarmReadResponse> {
         return alarmQueryApplication.findMyAlarms(principal.name)
     }
+
+    @PostMapping("/send")
+    fun send() = alarmCommandApplication.send()
 }

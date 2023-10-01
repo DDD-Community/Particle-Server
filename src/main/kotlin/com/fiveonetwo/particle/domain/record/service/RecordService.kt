@@ -32,7 +32,7 @@ class RecordService(
 
     fun save(record: Record): Record = recordRepository.save(record)
 
-    fun deleteAllByUser(user: User) {
-        recordRepository.deleteAllByUser(user)
-    }
+    fun deleteAllByUser(user: User) = recordRepository.deleteAllByUser(user)
+
+    fun findRandomRecord(): Record? = recordRepository.findRandomRecord()
 }

@@ -37,3 +37,4 @@ out/
 .vscode/
 mysql
 **/application-*
+particle-firebase-admin-sdk.json

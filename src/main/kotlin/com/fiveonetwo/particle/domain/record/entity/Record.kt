@@ -15,8 +15,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
-@Table(name = "records")
 @Entity
+@Table(name = "records")
 class Record(
     @Id
     @Column(name = "record_id", nullable = false)
@@ -28,15 +28,17 @@ class Record(
     var title: String,
     @Column(name = "url", nullable = false, columnDefinition = "text")
     var url: String,
-    @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var items: MutableList<RecordItem> = mutableListOf(),
-    @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var tags: MutableList<RecordTag> = mutableListOf(),
 ) : BaseTimeEntity() {
     fun update(title: String = this.title, url: String = this.url) {
         this.title = title
         this.url = url
     }
+
+    fun mainItems(): List<RecordItem> = items.filter { item -> item.isMain }
 }
 
 @Table(name = "record_tags")
