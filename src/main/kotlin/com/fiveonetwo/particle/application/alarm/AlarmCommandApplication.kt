@@ -6,6 +6,7 @@ import com.fiveonetwo.particle.domain.alarm.service.AlarmTopic.PARTICLE_REMINDER
 import com.fiveonetwo.particle.domain.record.error.RecordNotFoundException
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.user.service.UserService
+import com.fiveonetwo.particle.shared.security.exception.AuthorizationException
 import com.fiveonetwo.particle.shared.utils.logger
 import com.fiveonetwo.particle.web.alarm.dto.AlarmCreateRequest
 import com.fiveonetwo.particle.web.alarm.dto.AlarmReadResponse
@@ -53,5 +54,11 @@ class AlarmCommandApplication(
             body = mainItems.first().content,
             topic = PARTICLE_REMINDER_ALARM.value
         )
+    }
+
+    fun delete(loginId: String, alarmId: String) {
+        val alarm = alarmService.mustFindById(alarmId)
+        if (alarm.user.id != loginId) throw AuthorizationException()
+        alarmService.delete(alarm)
     }
 }

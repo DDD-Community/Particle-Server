@@ -35,7 +35,7 @@ class RecordCommandApplication(
         recordService.deleteRecord(recordId)
         return recordService.save(dto.toRecord(loginUser))
             .let { entity -> RecordReadDTO.from(entity) }
-            .let { dto -> RecordReadResponse.from(dto = dto) }
+            .let { RecordReadResponse.from(dto = it) }
     }
 
     fun deleteMyRecord(loginId: String, recordId: String): String {
