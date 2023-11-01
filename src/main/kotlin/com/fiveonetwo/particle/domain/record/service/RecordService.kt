@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class RecordService(
     private val recordRepository: RecordRepository,
+    private val recordSearchService: RecordSearchService,
 ) {
     // command
     @Transactional
     fun createRecord(user: User, create: RecordCreateDTO): RecordReadDTO = recordRepository.save(create.toRecord(user = user))
+        .also { record -> recordSearchService.create(record) }
         .let { record -> RecordReadDTO.from(record) }
 
     @Transactional
@@ -29,6 +31,10 @@ class RecordService(
 
     fun findAllByUserAndContainTitle(user: User, title: String): List<Record> =
         recordRepository.findAllByUserAndTitleLikeOrderByCreatedAtDesc(user, "$title%")
+
+    fun findAllByUserAndContainTitleAndContent(user: User, target: String): List<RecordReadDTO> =
+        recordSearchService.findAllContentContains(target)
+            .map { RecordReadDTO.from(it.record) }
 
     fun save(record: Record): Record = recordRepository.save(record)
 

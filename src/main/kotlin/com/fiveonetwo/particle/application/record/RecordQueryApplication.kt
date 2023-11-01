@@ -21,6 +21,10 @@ class RecordQueryApplication(
             .map { record -> RecordReadDTO.from(record) }
             .map { dto -> RecordReadResponse.from(dto) }
 
+    fun searchMyRecordsByTitleAndContent(loginId: String, target: String): List<RecordReadResponse> =
+        recordService.findAllByUserAndContainTitleAndContent(userService.mustFindById(loginId), target)
+            .map { dto -> RecordReadResponse.from(dto) }
+
     fun searchMyRecordByTag(loginId: String, searchTag: String): List<RecordReadResponse> =
         recordService.findMyRecords(loginUser = userService.mustFindById(loginId))
             .filter { record -> record.tags.find { tag -> tag.value == Tag.originalValueOf(searchTag) } != null } // 해당 태그가 포함된 정보 필터링

@@ -69,6 +69,13 @@ class RecordController(
         title: String,
     ): List<RecordReadResponse> = recordQueryApplication.searchMyRecordsByTitle(loginId = principal.name, title = title)
 
+    @GetMapping("/search/by/title-and-content")
+    fun searchMyRecordByTitleAndContent(
+        principal: Principal,
+        @RequestParam
+        target: String,
+    ): List<RecordReadResponse> = recordQueryApplication.searchMyRecordsByTitleAndContent(loginId = principal.name, target = target)
+
     @GetMapping("/search/by/tag")
     fun searchMyRecordByTag(
         principal: Principal,

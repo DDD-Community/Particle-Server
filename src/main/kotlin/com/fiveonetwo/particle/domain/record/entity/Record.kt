@@ -13,6 +13,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -109,4 +110,17 @@ class RecordItem(
     val content: String,
     @Column(name = "is_main", nullable = false)
     val isMain: Boolean = false,
+)
+
+@Table(name = "record_search")
+@Entity
+class RecordSearch(
+    @Id
+    @Column(name = "record_search_id")
+    val id: String = uuid(),
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Record::class)
+    @JoinColumn(name = "record_id", nullable = false)
+    val record: Record,
+    @Column(name = "total_content", nullable = false)
+    val totalContent: String,
 )
