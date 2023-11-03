@@ -3,6 +3,7 @@ package com.fiveonetwo.particle.web.auth
 import com.fiveonetwo.particle.application.auth.AuthCommandApplication
 import com.fiveonetwo.particle.domain.auth.dto.LoginRequest
 import com.fiveonetwo.particle.domain.auth.dto.LoginSuccessResponse
+import com.fiveonetwo.particle.shared.dto.CommonResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +27,12 @@ class AuthController(
     )
 
     @DeleteMapping("/withdrawal")
-    fun withdrawal(principal: Principal) {
+    fun withdrawal(principal: Principal): CommonResponse {
         authCommandApplication.withdrawal(loginId = principal.name)
+        return CommonResponse(
+            message = "withdrawal success",
+            code = "WITHDRAWAL_SUCCESS",
+            status = 200
+        )
     }
 }

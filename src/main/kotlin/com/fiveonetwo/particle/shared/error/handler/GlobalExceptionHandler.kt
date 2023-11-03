@@ -9,12 +9,42 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
     @ExceptionHandler(ParticleException::class)
-    fun particleExceptionHandler(e: ParticleException): ResponseEntity<ErrorResponse> =
-            ErrorResponse(e.message, e.errorResponse.status, e.errorResponse.code)
-                    .let { ResponseEntity.status(e.errorResponse.status).body(it) }
+    fun particleExceptionHandler(
+        e: ParticleException
+    ): ResponseEntity<ErrorResponse> =
+        ErrorResponse(
+            e.message,
+            e.errorResponse.status,
+            e.errorResponse.code
+        ).let {
+            ResponseEntity
+                .status(e.errorResponse.status)
+                .body(it)
+        }
 
     @ExceptionHandler(IllegalAccessException::class)
-    fun illegalAccessException(e: IllegalAccessException): ResponseEntity<ErrorResponse> {
-        return ResponseEntity.status(403).body(ErrorResponse("권한이 없습니다.", 403, "ILLEGAL_ACCESS"))
-    }
+    fun illegalAccessException(
+        e: IllegalAccessException
+    ): ResponseEntity<ErrorResponse> = ResponseEntity
+        .status(403)
+        .body(
+            ErrorResponse(
+                "권한이 없습니다.",
+                403,
+                "ILLEGAL_ACCESS"
+            )
+        )
+
+    @ExceptionHandler(Exception::class)
+    fun otherExceptionHandler(
+        e: Exception
+    ): ResponseEntity<ErrorResponse> = ResponseEntity
+        .status(500)
+        .body(
+            ErrorResponse(
+                status = 500,
+                message = e.message ?: "",
+                code = "INTERNAL_SERVER_ERROR"
+            )
+        )
 }
