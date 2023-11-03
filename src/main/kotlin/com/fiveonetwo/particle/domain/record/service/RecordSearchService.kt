@@ -20,6 +20,5 @@ class RecordSearchService(
         recordSearchRepository.save(recordSearch)
     }
 
-    fun findAllContentContains(target: String): List<RecordSearch> =
-        recordSearchRepository.findAllByTotalContentContains(target)
+    fun findAllContentContains(target: String): List<RecordSearch> = recordSearchRepository.findAllByTotalContentContains(target)
 }

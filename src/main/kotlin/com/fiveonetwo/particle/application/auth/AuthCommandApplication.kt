@@ -2,6 +2,7 @@ package com.fiveonetwo.particle.application.auth
 
 import com.fiveonetwo.particle.domain.auth.dto.LoginSuccessResponse
 import com.fiveonetwo.particle.domain.auth.dto.LoginToken
+import com.fiveonetwo.particle.domain.record.service.RecordSearchService
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.redis.RedisService
 import com.fiveonetwo.particle.domain.user.dto.UserCreateDTO
@@ -40,6 +41,7 @@ class AuthCommandApplication(
         )
     }
 
+    @Transactional
     fun withdrawal(loginId: String) {
         val user = userService.mustFindById(loginId)
         recordService.deleteAllByUser(user)

@@ -5,10 +5,12 @@ import com.fiveonetwo.particle.domain.user.entity.User
 import com.fiveonetwo.particle.shared.utils.uuid
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
+import jakarta.persistence.ConstraintMode
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
+import jakarta.persistence.ForeignKey
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -119,7 +121,7 @@ class RecordSearch(
     @Column(name = "record_search_id")
     val id: String = uuid(),
     @OneToOne(fetch = FetchType.LAZY, targetEntity = Record::class)
-    @JoinColumn(name = "record_id", nullable = false)
+    @JoinColumn(name = "record_id", nullable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     val record: Record,
     @Column(name = "total_content", nullable = false)
     val totalContent: String,
