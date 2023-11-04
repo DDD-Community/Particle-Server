@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
+    id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
@@ -47,6 +48,12 @@ dependencies {
 
     // firebase
     implementation("com.google.firebase:firebase-admin:9.2.0")
+
+    // Querydsl 추가
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<KotlinCompile> {
