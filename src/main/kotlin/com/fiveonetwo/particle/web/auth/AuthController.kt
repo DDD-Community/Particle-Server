@@ -1,9 +1,10 @@
 package com.fiveonetwo.particle.web.auth
 
 import com.fiveonetwo.particle.application.auth.AuthCommandApplication
-import com.fiveonetwo.particle.domain.auth.dto.LoginRequest
-import com.fiveonetwo.particle.domain.auth.dto.LoginSuccessResponse
-import com.fiveonetwo.particle.shared.dto.CommonResponse
+import com.fiveonetwo.particle.web.auth.dto.LoginRequest
+import com.fiveonetwo.particle.web.auth.dto.LoginSuccessResponse
+import com.fiveonetwo.particle.web.auth.dto.LogoutSuccessResponse
+import com.fiveonetwo.particle.web.auth.dto.WithdrawalSuccessResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,13 +27,15 @@ class AuthController(
         identifier = login.identifier
     )
 
+    @PostMapping("/logout")
+    fun logout(
+        principal: Principal,
+    ): LogoutSuccessResponse = authCommandApplication.logout(loginId = principal.name)
+        .let { LogoutSuccessResponse(message = "logout success", code = "LOGOUT_SUCCESS", status = 200) }
+
     @DeleteMapping("/withdrawal")
-    fun withdrawal(principal: Principal): CommonResponse {
-        authCommandApplication.withdrawal(loginId = principal.name)
-        return CommonResponse(
-            message = "withdrawal success",
-            code = "WITHDRAWAL_SUCCESS",
-            status = 200
-        )
-    }
+    fun withdrawal(
+        principal: Principal
+    ): WithdrawalSuccessResponse = authCommandApplication.withdrawal(loginId = principal.name)
+        .let { WithdrawalSuccessResponse(message = "withdrawal success", code = "WITHDRAWAL_SUCCESS", status = 200) }
 }

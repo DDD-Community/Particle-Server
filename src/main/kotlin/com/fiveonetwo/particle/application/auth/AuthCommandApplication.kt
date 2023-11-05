@@ -1,13 +1,13 @@
 package com.fiveonetwo.particle.application.auth
 
-import com.fiveonetwo.particle.domain.auth.dto.LoginSuccessResponse
-import com.fiveonetwo.particle.domain.auth.dto.LoginToken
+import com.fiveonetwo.particle.application.auth.dto.LoginToken
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.redis.RedisService
 import com.fiveonetwo.particle.domain.user.dto.UserCreateDTO
 import com.fiveonetwo.particle.domain.user.dto.UserReadDTO
 import com.fiveonetwo.particle.domain.user.service.UserService
 import com.fiveonetwo.particle.shared.security.TokenProvider
+import com.fiveonetwo.particle.web.auth.dto.LoginSuccessResponse
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -39,6 +39,11 @@ class AuthCommandApplication(
             isNew = !isExist
         )
     }
+
+    @Transactional
+    fun logout(
+        loginId: String,
+    ): String? = redisService.delete(loginId)
 
     @Transactional
     fun withdrawal(loginId: String) {

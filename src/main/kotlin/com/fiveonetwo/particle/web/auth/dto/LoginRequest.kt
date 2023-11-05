@@ -1,4 +1,4 @@
-package com.fiveonetwo.particle.domain.auth.dto
+package com.fiveonetwo.particle.web.auth.dto
 
 class LoginRequest(
     val provider: String,

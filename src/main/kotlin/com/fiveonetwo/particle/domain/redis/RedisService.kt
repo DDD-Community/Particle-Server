@@ -12,4 +12,6 @@ class RedisService(
         val operator = redisTemplate.opsForValue()
         operator.set(key, value, duration)
     }
+
+    fun delete(key : String): String? = redisTemplate.opsForValue().getAndDelete(key)
 }
