@@ -23,19 +23,13 @@ class AlarmService(
     private val log: Logger = logger<AlarmService>()
 
     @Transactional
-    fun create(entity: Alarm) {
-        alarmRepository.save(entity)
-    }
+    fun create(entity: Alarm): Alarm = alarmRepository.save(entity)
 
     @Transactional
-    fun save(entity: Alarm): Alarm {
-        return alarmRepository.save(entity)
-    }
+    fun save(entity: Alarm): Alarm = alarmRepository.save(entity)
 
     @Transactional
-    fun delete(entity: Alarm) {
-        alarmRepository.delete(entity)
-    }
+    fun delete(entity: Alarm) = alarmRepository.delete(entity)
 
     fun findMyAlarms(user: User): List<Alarm> {
         return alarmRepository.findAllByUser(user)
@@ -43,15 +37,8 @@ class AlarmService(
 
     fun send(title: String, body: String, topic: String) {
         log.info("send message : {title : $title, body : $body, topic : $topic}")
-        val androidConfig = AndroidConfig.builder()
-            .setPriority(AndroidConfig.Priority.HIGH)
-            .build()
-
-        val notification = Notification.builder()
-            .setTitle(title)
-            .setBody(body)
-            .build()
-
+        val androidConfig = createDefaultAndroidConfig()
+        val notification = createNotification(title, body)
         val message = Message.builder()
             .setNotification(notification)
             .setAndroidConfig(androidConfig)
@@ -61,5 +48,27 @@ class AlarmService(
         firebaseMessaging.send(message)
     }
 
-    fun mustFindById(id:String): Alarm = alarmRepository.findByIdOrNull(id) ?: throw AlarmNotFoundException()
+    fun sendUsingToken(title: String, body: String, token: String) {
+        log.info("send message : {title : $title, body : $body, token : $token}")
+        val androidConfig = createDefaultAndroidConfig()
+        val notification = createNotification(title, body)
+        val message = Message.builder()
+            .setNotification(notification)
+            .setAndroidConfig(androidConfig)
+            .setToken(token)
+            .build()
+
+        firebaseMessaging.send(message)
+    }
+
+    fun createDefaultAndroidConfig(): AndroidConfig = AndroidConfig.builder()
+        .setPriority(AndroidConfig.Priority.HIGH)
+        .build()
+
+    fun createNotification(title: String, body: String): Notification = Notification.builder()
+        .setTitle(title)
+        .setBody(body)
+        .build()
+
+    fun mustFindById(id: String): Alarm = alarmRepository.findByIdOrNull(id) ?: throw AlarmNotFoundException()
 }

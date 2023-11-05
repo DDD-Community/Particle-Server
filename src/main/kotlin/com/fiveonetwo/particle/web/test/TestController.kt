@@ -19,4 +19,11 @@ class TestController(
         @RequestParam body: String,
         @RequestParam topic: String
     ) = alarmService.send(title, body, topic)
+
+    @PostMapping("/v1/alarm/send/using/token")
+    fun sendTestAlarmUsingToken(
+        @RequestParam title: String,
+        @RequestParam body: String,
+        @RequestParam token: String,
+    ) = alarmService.sendUsingToken(title, body, token)
 }
