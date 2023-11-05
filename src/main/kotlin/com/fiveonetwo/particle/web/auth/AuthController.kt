@@ -31,11 +31,11 @@ class AuthController(
     fun logout(
         principal: Principal,
     ): LogoutSuccessResponse = authCommandApplication.logout(loginId = principal.name)
-        .let { LogoutSuccessResponse(message = "logout success", code = "LOGOUT_SUCCESS", status = 200) }
+        .run { LogoutSuccessResponse(message = "logout success", code = "LOGOUT_SUCCESS", status = 200) }
 
     @DeleteMapping("/withdrawal")
     fun withdrawal(
         principal: Principal
     ): WithdrawalSuccessResponse = authCommandApplication.withdrawal(loginId = principal.name)
-        .let { WithdrawalSuccessResponse(message = "withdrawal success", code = "WITHDRAWAL_SUCCESS", status = 200) }
+        .run { WithdrawalSuccessResponse(message = "withdrawal success", code = "WITHDRAWAL_SUCCESS", status = 200) }
 }
