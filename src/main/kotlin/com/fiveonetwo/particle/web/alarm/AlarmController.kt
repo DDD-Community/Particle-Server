@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -33,7 +34,7 @@ class AlarmController(
     ): List<AlarmReadResponse> = alarmQueryApplication.findMyAlarms(principal.name)
 
     @PostMapping("/send")
-    fun send() = alarmCommandApplication.send()
+    fun send(@RequestParam token: String) = alarmCommandApplication.send(token)
 
     @DeleteMapping("/{alarmId}")
     fun delete(

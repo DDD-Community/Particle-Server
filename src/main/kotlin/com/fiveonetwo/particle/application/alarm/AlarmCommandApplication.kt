@@ -2,7 +2,6 @@ package com.fiveonetwo.particle.application.alarm
 
 import com.fiveonetwo.particle.domain.alarm.entity.Alarm
 import com.fiveonetwo.particle.domain.alarm.service.AlarmService
-import com.fiveonetwo.particle.domain.alarm.service.AlarmTopic.PARTICLE_REMINDER_ALARM
 import com.fiveonetwo.particle.domain.record.error.RecordNotFoundException
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.user.service.UserService
@@ -40,7 +39,7 @@ class AlarmCommandApplication(
         }
     }
 
-    fun send() {
+    fun send(token: String) {
         val record = recordService.findRandomRecord() ?: throw RecordNotFoundException()
         val mainItems = record.mainItems()
 
@@ -49,11 +48,7 @@ class AlarmCommandApplication(
             return
         }
 
-        alarmService.send(
-            title = record.title,
-            body = mainItems.first().content,
-            topic = PARTICLE_REMINDER_ALARM.value
-        )
+        alarmService.sendUsingToken(title = record.title, body = mainItems.first().content, token = token)
     }
 
     fun delete(loginId: String, alarmId: String) {
