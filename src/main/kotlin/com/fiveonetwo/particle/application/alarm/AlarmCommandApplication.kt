@@ -48,7 +48,12 @@ class AlarmCommandApplication(
             return
         }
 
-        alarmService.sendUsingToken(title = record.title, body = mainItems.first().content, token = token)
+        alarmService.sendUsingToken(
+            title = record.title,
+            body = mainItems.first().content,
+            token = token,
+            data = mutableMapOf("recordId" to record.id)
+        )
     }
 
     fun delete(loginId: String, alarmId: String) {

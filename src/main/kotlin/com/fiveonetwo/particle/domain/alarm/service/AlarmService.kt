@@ -48,7 +48,7 @@ class AlarmService(
         firebaseMessaging.send(message)
     }
 
-    fun sendUsingToken(title: String, body: String, token: String) {
+    fun sendUsingToken(title: String, body: String, token: String, data: MutableMap<String, String>) {
         log.info("send message : {title : $title, body : $body, token : $token}")
         val androidConfig = createDefaultAndroidConfig()
         val notification = createNotification(title, body)
@@ -56,6 +56,7 @@ class AlarmService(
             .setNotification(notification)
             .setAndroidConfig(androidConfig)
             .setToken(token)
+            .putAllData(data)
             .build()
 
         firebaseMessaging.send(message)
