@@ -25,5 +25,5 @@ class TestController(
         @RequestParam title: String,
         @RequestParam body: String,
         @RequestParam token: String,
-    ) = alarmService.sendUsingToken(title, body, token)
+    ) = alarmService.sendUsingToken(title, body, token, mutableMapOf())
 }
