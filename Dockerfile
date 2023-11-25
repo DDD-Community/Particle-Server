@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN gradle clean build
 
-FROM openjdk:17
+FROM findepi/graalvm:java17
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 COPY --from=builder /app/*.json /app/particle-firebase-admin-sdk.json
