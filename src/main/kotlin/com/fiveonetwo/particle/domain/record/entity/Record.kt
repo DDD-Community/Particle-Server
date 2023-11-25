@@ -6,6 +6,8 @@ import com.fiveonetwo.particle.shared.utils.uuid
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.ConstraintMode
+import jakarta.persistence.Embeddable
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -31,6 +33,8 @@ class Record(
     var title: String,
     @Column(name = "url", nullable = false, columnDefinition = "text")
     var url: String,
+    @Embedded
+    var attribute: RecordAttribute = RecordAttribute(),
     @OneToMany(targetEntity = RecordItem::class, mappedBy = "record", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var items: MutableList<RecordItem> = mutableListOf(),
     @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
@@ -42,6 +46,26 @@ class Record(
     }
 
     fun mainItems(): List<RecordItem> = items.filter { item -> item.isMain }
+}
+
+fun randomColor(): RecordColor = RecordColor.values().random()
+
+@Embeddable
+class RecordAttribute(
+    @Column(name = "color")
+    @Enumerated(value = EnumType.STRING)
+    var color: RecordColor = randomColor(),
+    @Column(name = "style")
+    @Enumerated(value = EnumType.STRING)
+    var style: RecordStyle = RecordStyle.CARD
+)
+
+enum class RecordColor {
+    YELLOW, BLUE
+}
+
+enum class RecordStyle {
+    TEXT, CARD
 }
 
 @Table(name = "record_tags")

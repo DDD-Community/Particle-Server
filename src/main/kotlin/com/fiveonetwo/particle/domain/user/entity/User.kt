@@ -26,7 +26,7 @@ class User(
     val identifier: String,
     @Column(name = "profile_image_url", columnDefinition = "text")
     val profileImageUrl: String = findUserProfileImageByNickname(nickname),
-    @Column(name = "recommend_tags", nullable = false)
+    @Column(name = "interested_tags", nullable = false, columnDefinition = "varbinary(255)")
     val interestedTags: MutableList<Tag> = mutableListOf(),
 ) : BaseTimeEntity()
 
