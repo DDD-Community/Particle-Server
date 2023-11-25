@@ -7,7 +7,7 @@ class RecordUpdateRequest(
     val url: String,
     val items: List<RecordItemUpdateRequest>,
     val tags: List<String>,
-    val style: RecordStyle,
+    val style: RecordStyle = RecordStyle.TEXT,
 )
 
 class RecordItemUpdateRequest(
