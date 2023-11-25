@@ -4,6 +4,7 @@ import com.fiveonetwo.particle.domain.record.dto.RecordCreateDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordUpdateDTO
 import com.fiveonetwo.particle.domain.record.entity.Record
+import com.fiveonetwo.particle.domain.record.service.RecordSearchService
 import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.user.entity.User
 import com.fiveonetwo.particle.domain.user.service.UserService
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component
 @Component
 class RecordCommandApplication(
     private val recordService: RecordService,
+    private val recordSearchService: RecordSearchService,
     private val userService: UserService,
 ) {
     fun createRecord(loginId: String, request: RecordCreateRequest): RecordReadResponse =
@@ -43,6 +45,7 @@ class RecordCommandApplication(
         val record = recordService.mustFindById(recordId)
 
         validate(user = loginUser, record = record)
+        recordSearchService.deleteRecord(record)
         recordService.deleteRecord(recordId)
         return recordId
     }

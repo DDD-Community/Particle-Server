@@ -21,4 +21,5 @@ class RecordSearchService(
     }
 
     fun findAllContentContains(target: String): List<RecordSearch> = recordSearchRepository.findAllByTotalContentContains(target)
+    fun deleteRecord(record: Record) = recordSearchRepository.deleteByRecord(record)
 }
