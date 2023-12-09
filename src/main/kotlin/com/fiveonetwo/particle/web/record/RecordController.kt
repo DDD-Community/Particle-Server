@@ -2,10 +2,13 @@ package com.fiveonetwo.particle.web.record
 
 import com.fiveonetwo.particle.application.record.RecordCommandApplication
 import com.fiveonetwo.particle.application.record.RecordQueryApplication
+import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import com.fiveonetwo.particle.web.record.dto.RecordCreateRequest
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
 import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -82,6 +85,21 @@ class RecordController(
         @RequestParam
         tag: String,
     ): List<RecordReadResponse> = recordQueryApplication.searchMyRecordByTag(loginId = principal.name, searchTag = tag)
+
+    @GetMapping("/search-other/by/tags")
+    fun searchOtherPersonRecordByTags(
+        @RequestParam
+        tags: List<String>,
+        @RequestParam
+        size: Int,
+        @RequestParam
+        page: Int,
+        principal: Principal
+    ): Page<RecordReadDTO> = recordQueryApplication.searchOtherPersonRecordByTags(
+        pageable = PageRequest.of(page, size),
+        searchTags = tags,
+        loginId = principal.name
+    )
 
     @GetMapping("/search/url/title")
     fun searchRecordUrlTitle(

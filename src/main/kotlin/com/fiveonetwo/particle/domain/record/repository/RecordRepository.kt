@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RecordRepository : JpaRepository<Record, String> {
+interface RecordRepository : JpaRepository<Record, String> , CustomRecordRepository{
     fun findAllByUserOrderByCreatedAtDesc(user: User): List<Record>
     fun findAllByUserAndTitleLikeOrderByCreatedAtDesc(user: User, title: String): List<Record>
     fun deleteAllByUser(user: User)

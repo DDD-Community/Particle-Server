@@ -118,7 +118,7 @@ enum class Tag(
                     return tag
                 }
             }
-            throw IllegalArgumentException("tag value is incorrect")
+            throw IllegalArgumentException("tag value($value) is incorrect")
         }
     }
 }

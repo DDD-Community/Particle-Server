@@ -6,6 +6,8 @@ import com.fiveonetwo.particle.domain.record.service.RecordService
 import com.fiveonetwo.particle.domain.scrap.UrlScraper
 import com.fiveonetwo.particle.domain.user.service.UserService
 import com.fiveonetwo.particle.web.record.dto.RecordReadResponse
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
@@ -30,6 +32,13 @@ class RecordQueryApplication(
             .filter { record -> record.tags.find { tag -> tag.value == Tag.originalValueOf(searchTag) } != null } // 해당 태그가 포함된 정보 필터링
             .map { record -> RecordReadDTO.from(record) }
             .map { dto -> RecordReadResponse.from(dto) }
+
+    fun searchOtherPersonRecordByTags(pageable: Pageable, searchTags: List<String>, loginId: String): Page<RecordReadDTO> =
+        recordService.pagedOtherPersonRecordsByTags(
+            pageable = pageable,
+            tags = searchTags.map { Tag.originalValueOf(it) },
+            currentUser = userService.mustFindById(loginId)
+        )
 
     fun searchRecordUrlTitle(url: String): String = UrlScraper.readTitle(url = url)
 

@@ -3,9 +3,12 @@ package com.fiveonetwo.particle.domain.record.service
 import com.fiveonetwo.particle.domain.record.dto.RecordCreateDTO
 import com.fiveonetwo.particle.domain.record.dto.RecordReadDTO
 import com.fiveonetwo.particle.domain.record.entity.Record
+import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.record.error.RecordNotFoundException
 import com.fiveonetwo.particle.domain.record.repository.RecordRepository
 import com.fiveonetwo.particle.domain.user.entity.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,6 +38,10 @@ class RecordService(
     fun findAllByUserAndContainTitleAndContent(user: User, target: String): List<RecordReadDTO> =
         recordSearchService.findAllContentContains(target)
             .map { RecordReadDTO.from(it.record) }
+
+    fun pagedOtherPersonRecordsByTags(pageable: Pageable, tags: List<Tag>, currentUser: User): Page<RecordReadDTO> =
+        recordRepository.pagedOtherPersonRecordsByTags(pageable, tags, currentUser)
+            .map { RecordReadDTO.from(it) }
 
     fun save(record: Record): Record = recordRepository.save(record)
 
