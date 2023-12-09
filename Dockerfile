@@ -1,7 +1,7 @@
 FROM gradle:jdk17 as builder
 WORKDIR /app
 COPY . .
-RUN gradle clean build
+RUN gradle clean build --exclude-task test --parallel --daemon --configuration-cache
 
 FROM findepi/graalvm:java17
 WORKDIR /app
