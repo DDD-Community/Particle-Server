@@ -50,16 +50,10 @@ dependencies {
     // firebase
     implementation("com.google.firebase:firebase-admin:9.2.0")
 
-//    // Querydsl 추가
-//    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-//    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
-//    annotationProcessor("jakarta.annotation:jakarta.annotation-api:2.1.1")
-//    annotationProcessor("jakarta.persistence:jakarta.persistence-api:3.1.0")
-
-    implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    kapt ("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    kapt ("jakarta.annotation:jakarta.annotation-api")
-    kapt ("jakarta.persistence:jakarta.persistence-api")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("jakarta.annotation:jakarta.annotation-api")
+    kapt("jakarta.persistence:jakarta.persistence-api")
 
     implementation(project(":particle-redis-module"))
 }
