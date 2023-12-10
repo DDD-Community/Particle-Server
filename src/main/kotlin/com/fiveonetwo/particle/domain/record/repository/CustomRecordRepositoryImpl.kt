@@ -25,6 +25,7 @@ class CustomRecordRepositoryImpl(
             .where(recordTag.value.`in`(tags), record.user.ne(currentUser))
             .offset(offset)
             .limit(pageSize)
+            .orderBy(record.createdAt.desc())
             .fetch() ?: throw RecordNotFoundException()
 
         val count = jpaQueryFactory.select(record.count())
