@@ -20,6 +20,12 @@ class RecordSearchService(
         recordSearchRepository.save(recordSearch)
     }
 
+    @Transactional
+    fun update(record: Record) {
+        recordSearchRepository.deleteByRecord(record)
+        create(record)
+    }
+
     fun findAllContentContains(target: String): List<RecordSearch> = recordSearchRepository.findAllByTotalContentContains(target)
-    fun deleteRecord(record: Record) = recordSearchRepository.deleteByRecord(record)
+    fun deleteByRecord(record: Record) = recordSearchRepository.deleteByRecord(record)
 }

@@ -40,9 +40,20 @@ class Record(
     @OneToMany(targetEntity = RecordTag::class, mappedBy = "record", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var tags: MutableList<RecordTag> = mutableListOf(),
 ) : BaseTimeEntity() {
-    fun update(title: String = this.title, url: String = this.url) {
+    fun update(
+        title: String = this.title,
+        url: String = this.url,
+        tags: MutableList<RecordTag> = this.tags,
+        items: MutableList<RecordItem> = this.items,
+        style: RecordStyle = this.attribute.style,
+        color: RecordColor = this.attribute.color,
+    ) {
         this.title = title
         this.url = url
+        this.tags = tags
+        this.items = items
+        this.attribute.style = style
+        this.attribute.color = color
     }
 
     fun mainItems(): List<RecordItem> = items.filter { item -> item.isMain }

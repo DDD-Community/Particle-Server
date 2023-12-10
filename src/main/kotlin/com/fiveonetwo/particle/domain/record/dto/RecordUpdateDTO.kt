@@ -7,6 +7,7 @@ import com.fiveonetwo.particle.domain.record.entity.RecordStyle
 import com.fiveonetwo.particle.domain.record.entity.RecordTag
 import com.fiveonetwo.particle.domain.record.entity.Tag
 import com.fiveonetwo.particle.domain.user.entity.User
+import com.fiveonetwo.particle.shared.utils.uuid
 import com.fiveonetwo.particle.web.record.dto.RecordUpdateRequest
 
 
@@ -35,8 +36,9 @@ class RecordUpdateDTO(
         )
     }
 
-    fun toRecord(user: User): Record {
+    fun toRecord(id: String = uuid(), user: User): Record {
         val record = Record(
+            id = id,
             title = title,
             url = url,
             attribute = RecordAttribute(style = style),
